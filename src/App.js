@@ -1,6 +1,10 @@
 import React from "react";
 import ChildComponent from "./childComponent";
 import MovieCard from "./Movie";
+import AComponent from "./Components/PropsDrilling/AComponent";
+import AComponentContext from './Components/Context/AComponent';
+import LearningBasics from "./Components/FunctionalComponent/Basics";
+import { connect } from 'react-redux';
 
 //counter project
 class ParentComponent extends React.Component {
@@ -44,23 +48,32 @@ class ParentComponent extends React.Component {
   }
 
   //incremnt mrthod
+  // handleIncrement = () => {
+  //   this.setState({
+  //     count: this.state.count + 1,
+  //   });
+  // };
+
   handleIncrement = () => {
-    this.setState({
-      count: this.state.count + 1,
-    });
+    this.props.dispatch({type: "INCREMENT"})
   };
 
   //decrement method
+  // handleDecrement = () => {
+  //   this.setState({
+  //     count: this.state.count - 1,
+  //   });
+  // };
   handleDecrement = () => {
-    this.setState({
-      count: this.state.count - 1,
-    });
+   this.props.dispatch({type:"DECREMENT"})
   };
   handleChildMethod = () => {
     console.log("I am clicked by child component");
   };
 
   render() {
+    console.log('this.props', this.props)
+
     return (
       <div>
         {/* <ChildComponent
@@ -69,7 +82,7 @@ class ParentComponent extends React.Component {
           handleClick={this.handleChildMethod}
           namasteh={this.state.namasteh}
         /> */}
-        {this.state.movies.map((movie, index) => (
+        {/* {this.state.movies.map((movie, index) => (
           <MovieCard
             key={index}
             image={movie.image}
@@ -77,10 +90,20 @@ class ParentComponent extends React.Component {
             rating={movie.rating}
             description={movie.description}
           />
-        ))}
+        ))} */}
+        {/* <AComponentContext /> */}
+        {/* <LearningBasics greet={this.state.greet} /> */}
+        <button onClick={() => this.handleIncrement()}>INCREMENT</button>
+        <h1>{this.props.count}</h1>
+        <button onClick={() => this.handleDecrement()}>DECREMENT</button>
       </div>
     );
   }
 }
 
-export default ParentComponent;
+const mapStateToProps = (state) => {
+  return {count: state.count};
+}
+
+export default connect(mapStateToProps)(ParentComponent);
+
